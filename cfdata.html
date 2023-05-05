@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Geo data: Ravindra Suthar</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://www.allmy.work/api/client.js" async></script>
+    <style>
+      html {
+        position: relative;
+        min-height: 100%;
+      }
+      body {
+        margin-bottom: 60px; /* Height of the footer */
+      }
+
+      .footer {
+        background-color: #f5f5f5;
+      }
+      table {
+        text-transform: capitalize;
+      }
+      #clearBtn,
+      .gen {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="my-4">
+        <a href="https://rmsuthar.github.io/ravindra/">Ravindra</a>/<a
+          href="https://rmsuthar.github.io/tools/index.html"
+          >Utility</a
+        >/Geo data
+      </h1>
+      <div>
+        <table id="cfdata" class="table">
+          <thead>
+            <tr>
+              <th>Key</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+    <footer class="footer mt-auto py-3">
+      <div class="container">
+        <span class="text-muted">Disclaimer: </span>
+      </div>
+    </footer>
+    <script>
+      window.addEventListener(
+        "load",
+        function () {
+          // create table element
+          const table = document.getElementById("cfdata");
+          const data = cfData();
+          // create table rows
+          for (let key in data) {
+            const row = document.createElement("tr");
+            const cell1 = document.createElement("td");
+            const cell2 = document.createElement("td");
+
+            // set cell values
+            cell1.textContent = key;
+            cell2.textContent = data[key];
+
+            // append cells to row
+            row.appendChild(cell1);
+            row.appendChild(cell2);
+
+            // append row to table
+            table.appendChild(row);
+          }
+        },
+        false
+      );
+    </script>
+  </body>
+</html>
