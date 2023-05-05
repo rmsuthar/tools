@@ -50,7 +50,7 @@
       </div>
       <button id="submit" class="btn btn-primary">Parse</button>
 
-      <br />
+      <hr />
       <h2>Output</h2>
       <div id="output">
         <table id="outputTable" class="table"></table>
@@ -80,12 +80,13 @@
                 innerData[0] !== null
               ) {
                 for (let i = 0; i < innerData.length; i++) {
-                  flatten(innerData[i], name + keySeparator);
+                  let extract = (name + keySeparator).replace("..", ".");
+                  flatten(innerData[i], extract);
                 }
               } else {
                 result[name.slice(0, -1)] = {
                   dataType: "array",
-                  sampleValue: innerData.join("|"),
+                  sampleValue: innerData.join(" | "),
                 };
               }
             } else {
