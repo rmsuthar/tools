@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Flattened JSON</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+
+    <style>
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 8px;
+        border: 1px solid #ddd;
+      }
+      tr:first-child {
+        background-color: #2e2e2e;
+        color: white;
+        font-weight: bold;
+      }
+      tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+      .footer {
+        background-color: #f5f5f5;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="my-4">
+        <a href="https://rmsuthar.github.io/ravindra/">Ravindra</a>/<a
+          href="https://rmsuthar.github.io/tools/index.html"
+          >Utility</a
+        >/JSON Extracts
+      </h1>
+      <p>Utitlity created for extract each fileds to review and share</p>
+      <hr />
+      <h2>JSON Input</h2>
+
+      <div class="form-group">
+        <label for="json_data">JSON Data:</label>
+        <textarea class="form-control" rows="5" id="json_data"></textarea>
+      </div>
+      <button id="submit" class="btn btn-primary">Parse</button>
+
+      <br />
+      <h2>Output</h2>
+      <div id="output">
+        <table id="outputTable" class="table"></table>
+      </div>
+    </div>
+    <footer class="footer mt-auto py-3">
+      <div class="container">
+        <span class="text-muted"
+          >Disclaimer: This tool does not store any data at the backend system.
+          All data are processed locally in your browser and are not transmitted
+          to any remote server. We take your privacy seriously and aim to
+          provide a secure and transparent experience.</span
+        >
+      </div>
+    </footer>
+    <script>
+      let submit = document.getElementById("submit");
+      function flattenJson(jsonData, keySeparator = ".") {
+        let result = {};
+        console.log(jsonData);
+        function flatten(innerData, name = "") {
+          if (typeof innerData === "object" && innerData !== null) {
+            if (Array.isArray(innerData)) {
+              if (
+                innerData.length > 0 &&
+                typeof innerData[0] === "object" &&
+                innerData[0] !== null
+              ) {
+                for (let i = 0; i < innerData.length; i++) {
+                  flatten(innerData[i], name + keySeparator);
+                }
+              } else {
+                result[name.slice(0, -1)] = {
+                  dataType: "array",
+                  sampleValue: innerData.join("|"),
+                };
+              }
+            } else {
+              for (let key in innerData) {
+                flatten(innerData[key], name + key + keySeparator);
+              }
+            }
+          } else {
+            result[name.slice(0, -1)] = {
+              dataType: typeof innerData,
+              sampleValue: innerData,
+            };
+          }
+        }
+        flatten(jsonData);
+        return result;
+      }
+
+      // Example usage
+      let jsonData = {
+        employees: [
+          {
+            name: "John Doe",
+            email: "john.doe@example.com",
+            age: 30,
+            salary: 7500.25,
+            is_manager: true,
+            skills: [
+              { name: "Python", level: "Intermediate" },
+              { name: "Java", level: "Advanced" },
+            ],
+            companies_worked: ["CTS", "TCS"],
+          },
+          {
+            name: "Jane Smith",
+            email: "jane.smith@example.com",
+            age: 25,
+            salary: 5000.5,
+            is_manager: false,
+            skills: [
+              { name: "JavaScript", level: "Beginner" },
+              { name: "PHP", level: "Advanced", md: 1 },
+            ],
+            companies_worked: ["IBM", "Wipro"],
+          },
+        ],
+      };
+
+      let json_txt = document.querySelector("#json_data");
+      json_txt.value = JSON.stringify(jsonData, null, 0);
+      let flattenedData = flattenJson(jsonData);
+
+      let outputTable = document.getElementById("outputTable");
+      let headerRow = outputTable.insertRow();
+
+      submit.addEventListener("click", (e) => {
+        if (json_txt.value) {
+          jsonData = JSON.parse(json_txt.value);
+        } else {
+          json_txt.value = JSON.stringify(jsonData, null, 0);
+        }
+        flattenedData = flattenJson(jsonData);
+        outputTable.innerHTML = "";
+        headerRow = outputTable.insertRow();
+        headerRow.insertCell().appendChild(document.createTextNode("Field"));
+
+        headerRow
+          .insertCell()
+          .appendChild(document.createTextNode("Data Type"));
+
+        headerRow
+          .insertCell()
+          .appendChild(document.createTextNode("Sample Value"));
+
+        for (let key in flattenedData) {
+          let row = outputTable.insertRow();
+          row.insertCell().appendChild(document.createTextNode(key));
+          row
+            .insertCell()
+            .appendChild(document.createTextNode(flattenedData[key].dataType));
+          row
+            .insertCell()
+            .appendChild(
+              document.createTextNode(flattenedData[key].sampleValue)
+            );
+        }
+      });
+
+      headerRow.insertCell().appendChild(document.createTextNode("Field"));
+
+      headerRow.insertCell().appendChild(document.createTextNode("Data Type"));
+
+      headerRow
+        .insertCell()
+        .appendChild(document.createTextNode("Sample Value"));
+
+      for (let key in flattenedData) {
+        let row = outputTable.insertRow();
+        row.insertCell().appendChild(document.createTextNode(key));
+        row
+          .insertCell()
+          .appendChild(document.createTextNode(flattenedData[key].dataType));
+        row
+          .insertCell()
+          .appendChild(document.createTextNode(flattenedData[key].sampleValue));
+      }
+    </script>
+  </body>
+</html>
