@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>URL Rewrite Rule Generator: Ravindra Suthar</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <style>
+      html {
+        position: relative;
+        min-height: 100%;
+      }
+      body {
+        margin-bottom: 60px; /* Height of the footer */
+      }
+
+      .footer {
+        background-color: #f5f5f5;
+      }
+
+      #clearBtn,
+      .gen {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="my-4">URL Rewrite Rule Generator</h1>
+      <form>
+        <div class="form-group">
+          <label for="fromUrl"
+            >From URL: to all files in a folder for redirect the from URL ends
+            with /*.</label
+          >
+          <input type="text" class="form-control" id="fromUrl" name="fromUrl" />
+        </div>
+
+        <div class="form-group">
+          <label for="toUrl">To URL:</label>
+          <input type="text" class="form-control" id="toUrl" name="toUrl" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+          Generate Rewrite Rule
+        </button>
+      </form>
+
+      <h2 class="my-4 gen">Generated Rewrite Rule:</h2>
+      <pre><code id="rewriteRule"></code></pre>
+      <button type="button" class="btn btn-secondary" id="clearBtn">
+        Clear
+      </button>
+    </div>
+    <footer class="footer mt-auto py-3">
+      <div class="container">
+        <span class="text-muted"
+          >Disclaimer: This rewrite tool does not store any data at the backend
+          system. All input URLs and generated rewrite rules are processed
+          locally in your browser and are not transmitted to any remote server.
+          We take your privacy seriously and aim to provide a secure and
+          transparent experience.</span
+        >
+      </div>
+    </footer>
+    <script>
+      const form = document.querySelector("form");
+      const rewriteRuleEl = document.querySelector("#rewriteRule");
+      const clearBtn = document.querySelector("#clearBtn");
+      const gen = document.querySelector(".gen");
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const fromUrl = document.querySelector("#fromUrl").value;
+        const toUrl = document.querySelector("#toUrl").value;
+
+        const fromUrlRegex = escapeRegExp(fromUrl);
+
+        let fromUrlPath = new URL(fromUrl).pathname; // extract path from old URL
+
+        // If the source URL ends with "/*", consider all files in that folder
+        if (fromUrlPath.endsWith("/*")) {
+          fromUrlPath = fromUrlPath.slice(0, -2) + "(/.*)?";
+        }
+
+        let rewriteRule = `RewriteRule ^${escapeRegExp(
+          fromUrlPath
+        )}$ ${toUrl} [R=301,L]`;
+
+        // Append the new rewrite rule to the existing content
+        rewriteRuleEl.textContent += rewriteRule + "\n";
+
+        // Show the clear button if the rewrite rule element has some content
+        if (rewriteRuleEl.textContent.trim().length > 0) {
+          clearBtn.style.display = "block";
+          gen.style.display = "block";
+        }
+      });
+
+      clearBtn.addEventListener("click", () => {
+        // Clear the content of the rewriteRule element
+        rewriteRuleEl.textContent = "";
+        clearBtn.style.display = "none"; // hide the clear button again
+        gen.style.display = "none"; // hide the gen
+      });
+
+      function escapeRegExp(string) {
+        return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      }
+    </script>
+  </body>
+</html>
