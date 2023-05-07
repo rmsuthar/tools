@@ -79,7 +79,7 @@
 
             // set cell values
             cell1.textContent = key;
-            cell2.textContent = data[key];
+            cell2.textContent = data[key].replace(/,/g, ", ");
 
             // append cells to row
             row.appendChild(cell1);
