@@ -71,6 +71,7 @@
           // create table element
           const table = document.getElementById("cfdata");
           const data = cfData();
+          console.log(data);
           // create table rows
           for (let key in data) {
             const row = document.createElement("tr");
@@ -79,7 +80,7 @@
 
             // set cell values
             cell1.textContent = key;
-            cell2.textContent = data[key];
+            cell2.textContent = data[key].toString().replace(/,/g, ", ");
 
             // append cells to row
             row.appendChild(cell1);
