@@ -115,7 +115,7 @@
         function () {
           // create table element
           const table = document.getElementById("cfdata");
-          const data = cfData();
+          const data = typeof cfData != "undefined" && cfData();
           console.log(data);
 
           if (!data) {
