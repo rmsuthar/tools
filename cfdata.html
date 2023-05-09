@@ -32,6 +32,10 @@
       .gen {
         display: none;
       }
+
+      .alert {
+        display: none;
+      }
     </style>
   </head>
   <body>
@@ -115,11 +119,13 @@
         function () {
           // create table element
           const table = document.getElementById("cfdata");
+          const alert = document.getElementsByClassName("alert");
           const data = typeof cfData != "undefined" && cfData();
           console.log(data);
 
           if (!data) {
             table.style.display = "none";
+            table.style.display = "block";
           }
           // create table rows
           for (let key in data) {
