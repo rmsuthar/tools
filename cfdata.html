@@ -117,6 +117,10 @@
           const table = document.getElementById("cfdata");
           const data = cfData();
           console.log(data);
+
+          if (!data) {
+            table.style.display = "none";
+          }
           // create table rows
           for (let key in data) {
             const row = document.createElement("tr");
