@@ -136,7 +136,10 @@
 
             // set cell values
             cell1.textContent = key;
-            cell2.textContent = data[key].toString().replace(/,/g, ", ");
+            cell2.textContent =
+              typeof data[key] == "object"
+                ? JSON.stringify(data[key]).toString().replace(/,/g, ", ")
+                : data[key].toString().replace(/,/g, ", ");
 
             // append cells to row
             row.appendChild(cell1);
