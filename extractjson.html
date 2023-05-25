@@ -91,7 +91,7 @@
                 }
               } else {
                 result[name.slice(0, -1)] = {
-                  dataType: "array",
+                  dataType: "array of" + typeof innerData[0],
                   sampleValue: JSON.stringify(innerData),
                 };
               }
