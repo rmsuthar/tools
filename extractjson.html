@@ -92,7 +92,7 @@
               } else {
                 result[name.slice(0, -1)] = {
                   dataType: "array",
-                  sampleValue: innerData.join(", "),
+                  sampleValue: JSON.stringify(innerData),
                 };
               }
             } else {
