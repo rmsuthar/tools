@@ -92,7 +92,7 @@
               } else {
                 result[name.slice(0, -1)] = {
                   dataType:
-                    typeof innerData[0] != "undefined"
+                    innerData.length > 0
                       ? "array<" + typeof innerData[0] + ">"
                       : "array",
                   sampleValue: JSON.stringify(innerData),
