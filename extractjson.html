@@ -91,7 +91,10 @@
                 }
               } else {
                 result[name.slice(0, -1)] = {
-                  dataType: "array<" + typeof innerData[0] + ">",
+                  dataType:
+                    typeof innerData[0] != "undefined"
+                      ? "array<" + typeof innerData[0] + ">"
+                      : "array",
                   sampleValue: JSON.stringify(innerData),
                 };
               }
