@@ -93,7 +93,7 @@
 
         let rewriteRule = `RewriteRule ^${escapeRegExp(
           fromUrlPath
-        )}$ ${toUrl} [R=301,L]`;
+        )}$ ${escapeRegExp(toUrl)} [R=301,L]`;
 
         // Append the new rewrite rule to the existing content
         rewriteRuleEl.textContent += rewriteRule + "\n";
@@ -113,7 +113,9 @@
       });
 
       function escapeRegExp(string) {
-        return unescape(string).replace(/[.*+?^${}()|[\]\\|\s]/g, "\\$&");
+        return unescape(string)
+          .replace(/[.*+?^${}()|[\]\\|\s]/g, "\\$&")
+          ?.trim();
       }
     </script>
   </body>
