@@ -100,7 +100,7 @@
           /\\\\/g,
           "\\"
         );
-        if (rewriteRuleText.search(rewriteRule) == -1) {
+        if (rewriteRuleText.indexOf(rewriteRule) == -1) {
           // Append the new rewrite rule to the existing content
           rewriteRuleEl.textContent += rewriteRule + "\n";
         }
