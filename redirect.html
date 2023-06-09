@@ -95,8 +95,15 @@
           fromUrlPath
         )}$ ${escapeRegExp(toUrl)} [R=301,L]`;
 
-        // Append the new rewrite rule to the existing content
-        rewriteRuleEl.textContent += rewriteRule + "\n";
+        const rewriteRuleElement = document.querySelector("#rewriteRule");
+        const rewriteRuleText = rewriteRuleElement.innerText.replace(
+          /\\\\/g,
+          "\\"
+        );
+        if (rewriteRuleText.search(rewriteRule) >= 0) {
+          // Append the new rewrite rule to the existing content
+          rewriteRuleEl.textContent += rewriteRule + "\n";
+        }
 
         // Show the clear button if the rewrite rule element has some content
         if (rewriteRuleEl.textContent.trim().length > 0) {
