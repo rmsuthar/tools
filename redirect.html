@@ -114,8 +114,8 @@
 
       function escapeRegExp(string) {
         return unescape(string)
-          .replace(/[.*+?^${}()|[\]\\|\s]/g, "\\$&")
-          ?.trim();
+          ?.trim()
+          ?.replace(/[.*+?^${}()|[\]\\|\s]/g, "\\$&");
       }
     </script>
   </body>
