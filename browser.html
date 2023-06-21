@@ -173,6 +173,10 @@
         }
       }
 
+      function getDevicePixel() {
+        return window.devicePixelRatio;
+      }
+
       // Plugins
       function getPlugins() {
         return Array.from(navigator.plugins).map((plugin) => plugin.name);
@@ -463,6 +467,7 @@
           timezoneOffset: getTimezoneOffset(),
           timezone: getTimezone(),
           sessionStorage: getSessionStorage(),
+          devicePixel: getDevicePixel(),
           localStorage: getLocalStorage(),
           indexedDb: getIndexedDB(),
           addBehavior: getAddBehavior(),
