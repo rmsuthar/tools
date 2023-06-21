@@ -436,12 +436,21 @@
 
       // Touch Support
       function getTouchSupport() {
-        return (
-          "ontouchstart" in window ||
-          (window.DocumentTouch && document instanceof window.DocumentTouch) ||
-          navigator.maxTouchPoints > 0 ||
-          navigator.msMaxTouchPoints > 0
-        );
+        var maxTouchPoints = 0;
+        var touchEvent;
+        if (typeof navigator.maxTouchPoints !== "undefined") {
+          maxTouchPoints = navigator.maxTouchPoints;
+        } else if (typeof navigator.msMaxTouchPoints !== "undefined") {
+          maxTouchPoints = navigator.msMaxTouchPoints;
+        }
+        try {
+          document.createEvent("TouchEvent");
+          touchEvent = true;
+        } catch (_) {
+          touchEvent = false;
+        }
+        var touchStart = "ontouchstart" in window;
+        return [maxTouchPoints, touchEvent, touchStart];
       }
 
       // Audio
