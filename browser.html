@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Browser data: Ravindra Suthar</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <style>
+      html {
+        position: relative;
+        min-height: 100%;
+      }
+      body {
+        margin-bottom: 60px; /* Height of the footer */
+      }
+
+      .footer,
+      .block {
+        background-color: #f5f5f5;
+      }
+      table {
+        border: 1px solid #dee2e6;
+      }
+      .table td:first-child,
+      .table th:first-child {
+        background: #f9f9f9;
+      }
+
+      #clearBtn,
+      .gen {
+        display: none;
+      }
+
+      .alert {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="my-4">
+        <a href="https://rmsuthar.github.io/ravindra/">Ravindra</a>/<a
+          href="https://rmsuthar.github.io/tools/index.html"
+          >Utility</a
+        >/Browser data
+      </h1>
+      <p class="mb-1">Utility created to extract browser data</p>
+      <hr />
+
+      <div class="alert alert-warning" role="alert">
+        Note: If you are facing to load page on enterprise network then please
+        check on other/open network.
+      </div>
+      <br />
+      <table id="cfdata" class="table">
+        <thead>
+          <tr>
+            <th>Key</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <br />
+    <footer class="footer mt-auto py-3">
+      <div class="container">
+        <span class="text-muted"
+          >Disclaimer: do not use JavaScript library without permisson
+        </span>
+      </div>
+    </footer>
+    <script>
+      // User Agent
+      function getUserAgent() {
+        return navigator.userAgent;
+      }
+
+      // Webdriver
+      function getWebdriver() {
+        return navigator.webdriver || false;
+      }
+
+      // Language
+      function getLanguage() {
+        return navigator.language || navigator.userLanguage || "";
+      }
+
+      // Color Depth
+      function getColorDepth() {
+        return window.screen.colorDepth || 0;
+      }
+
+      // Device Memory
+      function getDeviceMemory() {
+        return navigator.deviceMemory || 0;
+      }
+
+      // Hardware Concurrency
+      function getHardwareConcurrency() {
+        return navigator.hardwareConcurrency || 0;
+      }
+
+      // Screen Resolution
+      function getScreenResolution() {
+        return `${window.screen.width}x${window.screen.height}`;
+      }
+
+      // Available Screen Resolution
+      function getAvailableScreenResolution() {
+        return `${window.screen.availWidth}x${window.screen.availHeight}`;
+      }
+
+      // Timezone Offset
+      function getTimezoneOffset() {
+        return new Date().getTimezoneOffset();
+      }
+
+      // Timezone
+      function getTimezone() {
+        return Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+      }
+
+      // Session Storage
+      function getSessionStorage() {
+        return typeof sessionStorage !== "undefined";
+      }
+
+      // Local Storage
+      function getLocalStorage() {
+        return typeof localStorage !== "undefined";
+      }
+
+      // IndexedDB
+      function getIndexedDB() {
+        return typeof indexedDB !== "undefined";
+      }
+
+      // Add Behavior
+      function getAddBehavior() {
+        return !!window.attachEvent;
+      }
+
+      // Open Database
+      function getOpenDatabase() {
+        return typeof window.openDatabase !== "undefined";
+      }
+
+      // CPU Class
+      function getCPUClass() {
+        return navigator.cpuClass || "0";
+      }
+
+      // Platform
+      function getPlatform() {
+        return navigator.platform || "";
+      }
+
+      // Do Not Track
+      function getDoNotTrack() {
+        return navigator.doNotTrack || "";
+      }
+
+      // Plugins
+      function getPlugins() {
+        return Array.from(navigator.plugins).map((plugin) => plugin.name);
+      }
+
+      // Canvas
+      function getCanvas() {
+        const canvas = document.createElement("canvas");
+        const gl =
+          canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+        return !!gl;
+      }
+
+      // WebGL
+      function getWebGL() {
+        const canvas = document.createElement("canvas");
+        const gl =
+          canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+        return gl ? gl.getParameter(gl.VERSION) : "";
+      }
+
+      // WebGL Vendor and Renderer
+      function getWebGLVendorAndRenderer() {
+        const canvas = document.createElement("canvas");
+        const gl =
+          canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+        return gl
+          ? `${gl.getParameter(gl.VENDOR)} ${gl.getParameter(gl.RENDERER)}`
+          : "";
+      }
+
+      // Ad Block
+      function getAdBlock() {
+        const test = document.createElement("div");
+        test.innerHTML = "&nbsp;";
+        test.className = "adsbox";
+        const result = !test.offsetHeight;
+        test.remove();
+        return result;
+      }
+
+      // Has Lied Languages
+      function getHasLiedLanguages() {
+        // We check if navigator.language is equal to the first language of navigator.languages
+        // navigator.languages is undefined on IE11 (and potentially older IEs)
+        if (typeof navigator.languages !== "undefined") {
+          try {
+            var firstLanguages = navigator.languages[0].substr(0, 2);
+            if (firstLanguages !== navigator.language.substr(0, 2)) {
+              return true;
+            }
+          } catch (err) {
+            return true;
+          }
+        }
+        return false;
+      }
+
+      // Has Lied Resolution
+      function getHasLiedResolution() {
+        return (
+          window.screen.width < window.screen.availWidth ||
+          window.screen.height < window.screen.availHeight
+        );
+      }
+
+      // Has Lied OS
+      function getHasLiedOS() {
+        var userAgent = navigator.userAgent.toLowerCase();
+        var oscpu = navigator.oscpu;
+        var platform = navigator.platform.toLowerCase();
+        var os;
+        // We extract the OS from the user agent (respect the order of the if else if statement)
+        if (userAgent.indexOf("windows phone") >= 0) {
+          os = "Windows Phone";
+        } else if (userAgent.indexOf("win") >= 0) {
+          os = "Windows";
+        } else if (userAgent.indexOf("android") >= 0) {
+          os = "Android";
+        } else if (
+          userAgent.indexOf("linux") >= 0 ||
+          userAgent.indexOf("cros") >= 0
+        ) {
+          os = "Linux";
+        } else if (
+          userAgent.indexOf("iphone") >= 0 ||
+          userAgent.indexOf("ipad") >= 0
+        ) {
+          os = "iOS";
+        } else if (userAgent.indexOf("mac") >= 0) {
+          os = "Mac";
+        } else {
+          os = "Other";
+        }
+        // We detect if the person uses a mobile device
+        var mobileDevice =
+          "ontouchstart" in window ||
+          navigator.maxTouchPoints > 0 ||
+          navigator.msMaxTouchPoints > 0;
+
+        if (
+          mobileDevice &&
+          os !== "Windows Phone" &&
+          os !== "Android" &&
+          os !== "iOS" &&
+          os !== "Other"
+        ) {
+          return true;
+        }
+
+        // We compare oscpu with the OS extracted from the UA
+        if (typeof oscpu !== "undefined") {
+          oscpu = oscpu.toLowerCase();
+          if (
+            oscpu.indexOf("win") >= 0 &&
+            os !== "Windows" &&
+            os !== "Windows Phone"
+          ) {
+            return true;
+          } else if (
+            oscpu.indexOf("linux") >= 0 &&
+            os !== "Linux" &&
+            os !== "Android"
+          ) {
+            return true;
+          } else if (
+            oscpu.indexOf("mac") >= 0 &&
+            os !== "Mac" &&
+            os !== "iOS"
+          ) {
+            return true;
+          } else if (
+            (oscpu.indexOf("win") === -1 &&
+              oscpu.indexOf("linux") === -1 &&
+              oscpu.indexOf("mac") === -1) !==
+            (os === "Other")
+          ) {
+            return true;
+          }
+        }
+
+        // We compare platform with the OS extracted from the UA
+        if (
+          platform.indexOf("win") >= 0 &&
+          os !== "Windows" &&
+          os !== "Windows Phone"
+        ) {
+          return true;
+        } else if (
+          (platform.indexOf("linux") >= 0 ||
+            platform.indexOf("android") >= 0 ||
+            platform.indexOf("pike") >= 0) &&
+          os !== "Linux" &&
+          os !== "Android"
+        ) {
+          return true;
+        } else if (
+          (platform.indexOf("mac") >= 0 ||
+            platform.indexOf("ipad") >= 0 ||
+            platform.indexOf("ipod") >= 0 ||
+            platform.indexOf("iphone") >= 0) &&
+          os !== "Mac" &&
+          os !== "iOS"
+        ) {
+          return true;
+        } else {
+          var platformIsOther =
+            platform.indexOf("win") < 0 &&
+            platform.indexOf("linux") < 0 &&
+            platform.indexOf("mac") < 0 &&
+            platform.indexOf("iphone") < 0 &&
+            platform.indexOf("ipad") < 0;
+          if (platformIsOther !== (os === "Other")) {
+            return true;
+          }
+        }
+
+        return (
+          typeof navigator.plugins === "undefined" &&
+          os !== "Windows" &&
+          os !== "Windows Phone"
+        );
+      }
+
+      // Has Lied Browser
+      function getHasLiedBrowser() {
+        var userAgent = navigator.userAgent.toLowerCase();
+        var productSub = navigator.productSub;
+
+        // we extract the browser from the user agent (respect the order of the tests)
+        var browser;
+        if (userAgent.indexOf("firefox") >= 0) {
+          browser = "Firefox";
+        } else if (
+          userAgent.indexOf("opera") >= 0 ||
+          userAgent.indexOf("opr") >= 0
+        ) {
+          browser = "Opera";
+        } else if (userAgent.indexOf("chrome") >= 0) {
+          browser = "Chrome";
+        } else if (userAgent.indexOf("safari") >= 0) {
+          browser = "Safari";
+        } else if (userAgent.indexOf("trident") >= 0) {
+          browser = "Internet Explorer";
+        } else {
+          browser = "Other";
+        }
+
+        if (
+          (browser === "Chrome" ||
+            browser === "Safari" ||
+            browser === "Opera") &&
+          productSub !== "20030107"
+        ) {
+          return true;
+        }
+
+        // eslint-disable-next-line no-eval
+        var tempRes = eval.toString().length;
+        if (
+          tempRes === 37 &&
+          browser !== "Safari" &&
+          browser !== "Firefox" &&
+          browser !== "Other"
+        ) {
+          return true;
+        } else if (
+          tempRes === 39 &&
+          browser !== "Internet Explorer" &&
+          browser !== "Other"
+        ) {
+          return true;
+        } else if (
+          tempRes === 33 &&
+          browser !== "Chrome" &&
+          browser !== "Opera" &&
+          browser !== "Other"
+        ) {
+          return true;
+        }
+
+        // We create an error to see how it is handled
+        var errFirefox;
+        try {
+          // eslint-disable-next-line no-throw-literal
+          throw "a";
+        } catch (err) {
+          try {
+            err.toSource();
+            errFirefox = true;
+          } catch (errOfErr) {
+            errFirefox = false;
+          }
+        }
+        return errFirefox && browser !== "Firefox" && browser !== "Other";
+      }
+
+      // Touch Support
+      function getTouchSupport() {
+        return (
+          "ontouchstart" in window ||
+          (window.DocumentTouch && document instanceof window.DocumentTouch) ||
+          navigator.maxTouchPoints > 0 ||
+          navigator.msMaxTouchPoints > 0
+        );
+      }
+
+      // Audio
+      function getAudio() {
+        return typeof Audio !== "undefined";
+      }
+
+      // Enumerate Devices
+      function getEnumerateDevices() {
+        return !!navigator.mediaDevices?.enumerateDevices;
+      }
+
+      function generateBrowserInfo() {
+        return {
+          userAgent: getUserAgent(),
+          webdriver: getWebdriver(),
+          language: getLanguage(),
+          colorDepth: getColorDepth(),
+          deviceMemory: getDeviceMemory(),
+          hardwareConcurrency: getHardwareConcurrency(),
+          screenResolution: getScreenResolution(),
+          availableScreenResolution: getAvailableScreenResolution(),
+          timezoneOffset: getTimezoneOffset(),
+          timezone: getTimezone(),
+          sessionStorage: getSessionStorage(),
+          localStorage: getLocalStorage(),
+          indexedDb: getIndexedDB(),
+          addBehavior: getAddBehavior(),
+          openDatabase: getOpenDatabase(),
+          cpuClass: getCPUClass(),
+          platform: getPlatform(),
+          doNotTrack: getDoNotTrack(),
+          plugins: getPlugins(),
+          canvas: getCanvas(),
+          webgl: getWebGL(),
+          webglVendorAndRenderer: getWebGLVendorAndRenderer(),
+          adBlock: getAdBlock(),
+          hasLiedLanguages: getHasLiedLanguages(),
+          hasLiedResolution: getHasLiedResolution(),
+          hasLiedOs: getHasLiedOS(),
+          hasLiedBrowser: getHasLiedBrowser(),
+          touchSupport: getTouchSupport(),
+          audio: getAudio(),
+          enumerateDevices: getEnumerateDevices(),
+        };
+      }
+
+      // Usage
+      const browserInfo = generateBrowserInfo();
+      console.log(browserInfo);
+
+      window.addEventListener(
+        "load",
+        function () {
+          // create table element
+          const table = document.getElementById("cfdata");
+          const alert = document.querySelector(".alert");
+          const data = browserInfo;
+          console.log(data);
+
+          if (!data) {
+            table.style.display = "none";
+            alert.style.display = "block";
+          }
+          // create table rows
+          for (let key in data) {
+            const row = document.createElement("tr");
+            const cell1 = document.createElement("td");
+            const cell2 = document.createElement("td");
+
+            // set cell values
+            cell1.textContent = key;
+            cell2.textContent =
+              typeof data[key] == "object"
+                ? JSON.stringify(data[key])
+                : data[key].toString().replace(/,/g, ", ");
+
+            // append cells to row
+            row.appendChild(cell1);
+            row.appendChild(cell2);
+
+            // append row to table
+            table.appendChild(row);
+          }
+        },
+        false
+      );
+    </script>
+  </body>
+</html>
