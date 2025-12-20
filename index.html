@@ -1,64 +1,392 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-  <title>Utility Links</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ravindra Suthar | Developer Utilities & Security Tools</title>
+  <meta name="description"
+    content="A premium collection of lightweight, high-performance developer utilities and security tools by Ravindra Suthar.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-color: #050810;
+      --surface-color: #0f172a;
+      --surface-hover: #1e293b;
+      --primary-accent: #38bdf8;
+      --secondary-accent: #818cf8;
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-primary);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+      background-image:
+        radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(129, 140, 248, 0.05) 0%, transparent 40%);
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* --- Header Section --- */
+    .header {
+      padding: 6rem 0 4rem;
+      text-align: center;
+      animation: fadeInDown 0.8s ease-out;
+    }
+
+    .breadcrumb {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--primary-accent);
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .breadcrumb a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .breadcrumb a:hover {
+      color: var(--text-primary);
+    }
+
+    .title {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(2.5rem, 8vw, 4rem);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      font-size: 1.15rem;
+      color: var(--text-secondary);
+      max-width: 650px;
+      margin: 0 auto;
+      font-weight: 400;
+    }
+
+    /* --- Grid Layout --- */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 6rem;
+      animation: fadeInUp 1s ease-out 0.2s both;
+    }
+
+    /* --- Card Styles --- */
+    .card {
+      background-color: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 2rem;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, var(--primary-accent) 0%, transparent 100%);
+      opacity: 0;
+      transition: var(--transition);
+      z-index: 0;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      background-color: var(--surface-hover);
+      border-color: rgba(56, 189, 248, 0.3);
+      box-shadow: var(--card-shadow);
+    }
+
+    .card:hover::before {
+      opacity: 0.03;
+    }
+
+    .card-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.25rem;
+    }
+
+    .card-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .badge {
+      background: rgba(56, 189, 248, 0.1);
+      color: var(--primary-accent);
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.35rem 0.75rem;
+      border-radius: 100px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border: 1px solid rgba(56, 189, 248, 0.2);
+    }
+
+    .badge-new {
+      background: linear-gradient(135deg, var(--primary-accent), var(--secondary-accent));
+      color: var(--bg-color);
+      border: none;
+    }
+
+    .card-desc {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      color: var(--primary-accent);
+      font-size: 0.9rem;
+      font-weight: 600;
+      gap: 0.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-footer svg {
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover .card-footer svg {
+      transform: translateX(5px);
+    }
+
+    /* --- Animations --- */
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* --- Responsive Design --- */
+    @media (max-width: 768px) {
+      .header {
+        padding: 4rem 0 2.5rem;
+      }
+
+      .container {
+        padding: 0 1.5rem;
+      }
+
+      .tools-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 
 <body>
   <div class="container">
-    <h1 class="my-4">
-      <a href="https://rmsuthar.github.io/ravindra/">Ravindra</a>/Utility
-    </h1>
-    <p>
-      Developed some utilities helps developers to avoid mistakes and easy to
-      use.
-    </p>
-    <hr />
-    <div class="list-group">
-      <a href="https://www.csp-headers.in/" class="list-group-item list-group-item-action">
-        <h5 class="mb-1">CSP Headers</h5>
-        <p class="mb-1">It’s a comprehensive tool designed to help developers and security engineers generate Content
-          Security Policies (CSP) and security headers effortlessly.
-          Whether you are running Nginx, Apache, or IIS, this tool analyzes your application (via Source Code or AI URL
-          analysis) and generates the exact configuration you need to prevent XSS and Clickjacking attacks.</p>
+    <header class="header">
+      <nav class="breadcrumb">
+        <a href="https://rmsuthar.github.io/ravindra/">Ravindra</a>
+        <span>/</span>
+        <span>Utilities</span>
+      </nav>
+      <h1 class="title">Professional Tools<br>for Modern Web</h1>
+      <p class="subtitle">
+        A highly optimized collection of security and utility tools built to solve real-world development challenges.
+      </p>
+    </header>
+
+    <main class="tools-grid">
+      <a href="https://rmsuthar.github.io/StateGuard/" class="card">
+        <div class="card-content">
+          <div class="card-header">
+            <h2 class="card-title">StateGuard.js</h2>
+            <span class="badge badge-new">Security</span>
+          </div>
+          <p class="card-desc">Lock DOM element attributes and prevent unauthorized mutations. Detects and reverts
+            DevTools-driven changes in milliseconds to secure your application state.</p>
+        </div>
+        <div class="card-footer">
+          Get Started
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </div>
       </a>
-      <a href="https://www.jsonsvn.in/" class="list-group-item list-group-item-action">
-        <h5 class="mb-1">JSON SVN</h5>
-        <p class="mb-1">Built JSON SVN — Version Control for JSON Configs (https://www.jsonsvn.in), an API-first
-          configuration versioning service delivering smart deltas and Git-like history.</p>
+
+      <a href="https://www.csp-headers.in/" class="card">
+        <div class="card-content">
+          <div class="card-header">
+            <h2 class="card-title">CSP Headers</h2>
+            <span class="badge">DevSecOps</span>
+          </div>
+          <p class="card-desc">The industry-standard generator for Content Security Policies. Automated analysis of
+            source code and URLs to protect against XSS and injection attacks.</p>
+        </div>
+        <div class="card-footer">
+          Secure Site
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </div>
       </a>
-      <a href="redirect.html" class="list-group-item list-group-item-action">
-        <h5 class="mb-1">Redirect rule</h5>
-        <p class="mb-1">Utility helps to generate with valid regex</p>
+
+      <a href="https://www.jsonsvn.in/" class="card">
+        <div class="card-content">
+          <div class="card-header">
+            <h2 class="card-title">JSON SVN</h2>
+            <span class="badge">API</span>
+          </div>
+          <p class="card-desc">API-first configuration versioning service. Track changes, view smart deltas, and manage
+            your JSON state history with Git-like precision.</p>
+        </div>
+        <div class="card-footer">
+          View Docs
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </div>
       </a>
-      <a href="extractjson.html" class="list-group-item list-group-item-action">
-        <h5 class="mb-1">JSON Extracts</h5>
-        <p class="mb-1">
-          Utitlity created for extract each fileds to review and share
-        </p>
+
+      <a href="redirect.html" class="card">
+        <div class="card-content">
+          <div class="card-header">
+            <h2 class="card-title">Redirect Flows</h2>
+            <span class="badge">Utility</span>
+          </div>
+          <p class="card-desc">Effortlessly build complex regex-based redirect rules for Nginx, Apache, and edge
+            configurations. Validate workflows before deployment.</p>
+        </div>
+        <div class="card-footer">
+          Generate Rules
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </div>
+      </a>
+
+      <a href="extractjson.html" class="card">
+        <div class="card-content">
+          <div class="card-header">
+            <h2 class="card-title">JSON Pipeline</h2>
+            <span class="badge">Data</span>
+          </div>
+          <p class="card-desc">Advanced data extraction utility to flatten and map complex JSON schemas. Perfect for
+            quick reviews, debugging, and sharing data structures.</p>
+        </div>
+        <div class="card-footer">
+          Extract Data
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </div>
+      </a>
+
+      <a href="browser.html" class="card">
+        <div class="card-content">
+          <div class="card-header">
+            <h2 class="card-title">Browser Engine</h2>
+            <span class="badge">Inspector</span>
+          </div>
+          <p class="card-desc">High-fidelity browser metadata inspector. Audit environmental security headers, device
+            capabilities, and client-side fingerprinting details.</p>
+        </div>
+        <div class="card-footer">
+          Inspect Browser
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </div>
       </a>
 
 
-      <!-- <a href="cfdata.html" class="list-group-item list-group-item-action">
-          <h5 class="mb-1">Geo and privacy details</h5>
-          <p class="mb-1">
-            Utility created to extract client geo data also has feature of
-            detect privacy data.
-          </p>
-        </a>
-        -->
-      <a href="browser.html" class="list-group-item list-group-item-action">
-        <h5 class="mb-1">Your Browser details</h5>
-        <p class="mb-1">Utility created to extract browser data.</p>
-      </a>
-      <a href="india.html" class="list-group-item list-group-item-action">
-        <h5 class="mb-1">India Flag</h5>
-        <p class="mb-1">Indian flag using css</p>
-      </a>
-    </div>
+    </main>
   </div>
 </body>
 
